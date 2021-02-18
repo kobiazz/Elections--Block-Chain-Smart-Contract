@@ -1,0 +1,388 @@
+<!doctype html>
+
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+
+	*{
+		box-sizing: border-box
+	}
+	section {
+		box-sizing: border-box;
+		max-width: 1500px;
+	}
+	.container {
+		width: 100%;
+		background-color: #fff;	
+		text-transform: uppercase;
+		margin: 20px 0;
+		font-weight: 700;
+		font-size: 15px;
+	}
+	
+	.skills {
+	  text-align: center;
+	  padding-top: 10px;
+	  padding-bottom: 10px;
+	  margin-top: 10px;
+	  color: rgb(20, 19, 19);
+	  /* changes */
+	  height: 30px;
+	  border-radius: 7px;
+	  position: relative;
+	  width: 50%;
+	}
+	
+
+
+	</style>
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+   
+    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+</head>
+
+<body>
+    
+
+	<h1><p id='temp'></p></h1>
+	<h1><p id='Win'></p></h1>
+	<section>
+
+	</section>
+
+
+
+
+    <script>
+        var web3;
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider from Web3.providers
+            // Web3 = require('web3');
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+        }
+
+        
+		//  interacting with our local ethereum node with collections of  Web3 libraries
+		//Web3 gets 2 parameters: the ABI of our solidity Elections code compilation,
+		//And the currnet Elections contract Address 
+        var EthereumSession =new web3.eth.Contract([
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			}
+		],
+		"name": "Election",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			}
+		],
+		"name": "addCandidate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_person",
+				"type": "address"
+			}
+		],
+		"name": "authorize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "candidates",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "voteCount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "electionName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "end",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getCandidates",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "voteCount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct Elections.Candidate[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getElectionName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getNumCandidate",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getTotalVotes",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalVotes",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_voteIndex",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voters",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "authorized",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "voted",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "vote",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "whoWin",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+],"0x7c7Da7Bd4114Ede203ea7338D7a77a01727ac224");
+
+        // var ethereumSessionInstance = EthereumSession.at("0x603ccB9DAfcF5E0d048E806f9F72e93695c38Ba2");
+
+
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+
+
+        //ethereumSessionInstance.setTheInt(4546);
+
+        //wait until the transaction is mined.
+        // console.log(EthereumSession.methods.getNumCandidate().call());
+
+		// interacting with solidity Function getElectionName and printing the name
+        EthereumSession.methods.getElectionName().call().then(function(bal)
+    {
+        console.log(bal);
+		$('#temp').html(bal);
+    })
+
+	
+	// interacting with solidity Function Who win and printing the Candidates name
+	EthereumSession.methods.whoWin().call().then(function(bal)
+    {
+       // console.log(bal);
+	   var x="The Winner is ";
+	   x +=bal;
+		$('#Win').html(x);
+    })
+
+	EthereumSession.methods.getTotalVotes().call().then(function(bal)
+    {
+        console.log(bal);
+    })
+	// interacting with solidity Function Get Election Candidates= bal(Local Varible Of this func)
+	EthereumSession.methods.getCandidates().call().then(function(bal)
+    {
+        console.log(bal);
+
+
+		var TotalVotes = 0;
+		
+		var i = 0;
+		
+		for (i; i < bal.length; i++)
+		{
+			var v=parseInt(bal[i].voteCount);
+			TotalVotes= TotalVotes+v;	//calculate total votes of each Candidate
+			console.log(bal[i].voteCount);
+		}
+
+		console.log(TotalVotes);
+		var i = 0;
+		//loop that wil print all the parametrs of the election
+		for (i; i < bal.length; i++) {
+			var randomColor = Math.floor(Math.random()*16777215).toString(16);
+			var names = bal[i].name;
+			var counters = bal[i].voteCount;
+			var precent = Math.round(counters / TotalVotes * 100);
+			var nameItem = $('<div>');
+			nameItem.text(precent + '%');
+			nameItem.addClass("skills");
+			var c = $('<div>');
+			// var r = $('<div>');
+			$(c).addClass("container").text(names);
+			$("section").append(c);
+			//$(nameItem).attr("style", "width:" + precent + '%' + ';' + "background-color:" + "red");
+			
+			$(nameItem).attr("style", "width:" + precent + '%' + ';' + "background-color:" + '#' + randomColor);
+			nameItem.appendTo($(c));
+		}
+
+
+
+		
+
+
+		
+    })
+
+	
+    </script>
+</body>
+
+</html>
